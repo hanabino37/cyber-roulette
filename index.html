@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Circle Roulette</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <div id="menu-screen" class="screen-container">
+            <h1 class="app-title">CYBER ROULETTE</h1>
+
+            <div class="settings-panel">
+                <div class="mode-label">SELECT MODE</div>
+                <div class="mode-selector">
+                    <label><input type="radio" name="mode" value="2" checked><span>2択</span></label>
+                    <label><input type="radio" name="mode" value="3"><span>3択</span></label>
+                    <label><input type="radio" name="mode" value="4"><span>4択</span></label>
+                    <label><input type="radio" name="mode" value="6"><span>6択</span></label>
+                </div>
+
+                <div class="inputs-label">ITEMS</div>
+                <div id="inputs-area" class="inputs-area">
+                </div>
+            </div>
+
+            <button id="go-btn" class="cyber-btn big-btn">GO TO ROULETTE</button>
+        </div>
+
+        <div id="game-screen" class="screen-container hidden">
+            <div class="game-header">
+                <button id="back-btn" class="icon-btn">◀ BACK</button>
+            </div>
+
+            <div class="roulette-section">
+                <div class="roulette-board">
+                    <div class="outer-ring">
+                        <div id="lamp-container" class="lamp-container"></div>
+                        <div id="winner-highlight" class="winner-highlight"></div>
+
+                        <button id="start-btn" class="center-go-btn">GO</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div id="legend-area" class="legend-area"></div>
+
+                <div class="result-box">
+                    <div id="result-text" class="result-text">READY</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="patterns.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

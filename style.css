@@ -1,0 +1,498 @@
+:root {
+    --bg-color: #121212;
+    --text-color: #E0E0E0;
+
+    /* Neon Palette */
+    --color-A: #FF4D4D;
+    --color-B: #00E5FF;
+    --color-C: #FFEA00;
+    --color-D: #00FF66;
+    --color-E: #FF9E40;
+    --color-F: #D500F9;
+
+    /* Lamp Styles */
+    --lamp-off-bg: #222;
+    --lamp-active-color: #FFAA00;
+    /* ★固定オレンジ色 */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    touch-action: manipulation;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Orbitron', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.main-wrapper {
+    width: 100%;
+    max-width: 600px;
+    /* 全体の幅も少し広げる */
+    height: 100%;
+    position: relative;
+    background: radial-gradient(circle at center, rgba(30, 30, 30, 0.8) 0%, rgba(10, 10, 10, 0.95) 100%);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+/* === Screen Management === */
+.screen-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: absolute;
+    /* 重ねて配置 */
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s;
+    background: inherit;
+    /* 背景を引き継ぐ */
+}
+
+.screen-container.hidden {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* === Menu Screen Styles === */
+.app-title {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    color: #00E5FF;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.settings-panel {
+    width: 100%;
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.mode-label,
+.inputs-label {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.mode-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.mode-selector label {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    transition: 0.3s;
+}
+
+.mode-selector input {
+    display: none;
+}
+
+.mode-selector input:checked+span {
+    color: #00E5FF;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.inputs-area {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* スマホなら1列の方が見やすいかも */
+    gap: 12px;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.inputs-area input {
+    background: #0f0f0f;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    width: 100%;
+}
+
+.inputs-area input:focus {
+    border-color: #00E5FF;
+    outline: none;
+}
+
+.big-btn {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+/* === Game Screen Styles === */
+.game-header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.icon-btn {
+    background: transparent;
+    border: 1px solid #444;
+    color: #888;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 4px;
+}
+
+.icon-btn:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+.roulette-section {
+    flex: 1;
+    /* 残りの高さを埋める */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ★ルーレット盤面 (巨大化) */
+.roulette-board {
+    position: relative;
+    width: 90vw;
+    /* 画面幅の90% */
+    height: 90vw;
+    max-width: 600px;
+    /* 最大サイズを大幅アップ */
+    max-height: 600px;
+    /* アスペクト比を保つ */
+    aspect-ratio: 1 / 1;
+}
+
+/* 外周リング（12分割の溝 + メタリック） */
+.outer-ring {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #444;
+
+    background-image:
+        repeating-conic-gradient(from 14.5deg,
+            rgba(0, 0, 0, 0.8) 0deg 1deg,
+            rgba(255, 255, 255, 0.1) 1deg 2deg,
+            transparent 2deg 30deg),
+        radial-gradient(circle, #2a2a2a 60%, #111 100%);
+
+    box-shadow:
+        inset 0 0 30px #000,
+        0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.outer-ring::after {
+    /* 穴を埋めるため非表示に */
+    display: none;
+}
+
+/* ランプ（オレンジ発光） */
+.lamp-dot {
+    position: absolute;
+    width: 6%;
+    /* 親サイズに対する相対％に変更（巨大化対応） */
+    height: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #444, #111);
+    border: 1px solid #000;
+    box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.8);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.05s;
+    z-index: 5;
+}
+
+.lamp-dot.active {
+    background: var(--lamp-active-color) !important;
+    border-color: #fff;
+    box-shadow:
+        0 0 5px #fff,
+        0 0 15px var(--lamp-active-color),
+        0 0 30px var(--lamp-active-color),
+        0 0 60px var(--lamp-active-color);
+    transform: translate(-50%, -50%) scale(1.4);
+    z-index: 10;
+}
+
+/* 結果・操作エリア */
+.result-section {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    /* 背景透過に */
+    border-top: none;
+}
+
+.result-box {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.result-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: 3px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.cyber-btn {
+    background: transparent;
+    color: #00E5FF;
+    border: 2px solid #00E5FF;
+    padding: 15px 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.cyber-btn:hover {
+    background: rgba(0, 229, 255, 0.1);
+}
+
+.cyber-btn:disabled {
+    color: #444;
+    border-color: #444;
+    cursor: not-allowed;
+}
+
+/* --- style.css の最後に追加 --- */
+
+/* 当選エリアのハイライト */
+.winner-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none;
+    /* クリックを邪魔しない */
+    z-index: 1;
+    /* 背景(0)より上、ランプ(5)より下 */
+
+    /* 12時の位置(-15度〜15度)にある扇形を作る */
+    background: conic-gradient(from -15deg,
+            rgba(255, 255, 255, 0.6) 0deg,
+            rgba(255, 255, 255, 0.6) 30deg,
+            transparent 30deg);
+
+    /* ブレンドモードで下の色を明るくする */
+    mix-blend-mode: hard-light;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* 光ったとき */
+.winner-highlight.active {
+    opacity: 1;
+    /* 強く発光させる */
+    filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 20px #fff);
+    animation: flash-highlight 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes flash-highlight {
+    from {
+        opacity: 0.6;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ★中央GOボタン（ホワイト Ver.） */
+.center-go-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+
+    /* 黒ベースに白い枠線 */
+    background: radial-gradient(circle, #222, #000);
+    border: 2px solid #FFFFFF;
+    /* 白に変更 */
+    color: #FFFFFF;
+    /* 白に変更 */
+
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 20;
+
+    /* 白い発光 */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transition: all 0.2s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 1px;
+}
+
+.center-go-btn:hover {
+    background: #FFFFFF;
+    /* 背景を白に */
+    color: #000000;
+    /* 文字を黒に */
+    box-shadow: 0 0 30px #FFFFFF;
+    /* 強い白い光 */
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.center-go-btn:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.center-go-btn:disabled {
+    border-color: #444;
+    color: #444;
+    background: #111;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ★凡例エリアのデザイン */
+.legend-area {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #ccc;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #333;
+}
+
+.legend-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 5px currentColor;
+    /* ドット自体を発光させる */
+}
+
+/* --- style.css 追加・修正分 --- */
+
+/* 凡例エリア (Legend) */
+.legend-area {
+    width: 90%;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    /* 文字サイズ */
+    color: #e0e0e0;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+    /* 丸みをつける */
+    border: 1px solid #444;
+}
+
+/* 色のドット */
+.legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 5px currentColor;
+    /* 光らせる */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 結果テキストエリア（READYを消すため初期は空に） */
+.result-box {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    min-height: 3rem;
+    /* 高さを確保してガタツキ防止 */
+}
+
+.result-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}

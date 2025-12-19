@@ -1,0 +1,131 @@
+[
+    {
+        "id": 1,
+        "name": "Standard A",
+        "steps": [
+            {
+                "type": "loop",
+                "speed": 50,
+                "count": 24
+            },
+            {
+                "type": "loop",
+                "speed": 100,
+                "count": 12
+            },
+            {
+                "type": "step",
+                "speed": 300,
+                "count": 7
+            },
+            {
+                "type": "stop",
+                "duration": 1000
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Standard B",
+        "steps": [
+            {
+                "type": "loop",
+                "speed": 50,
+                "count": 24
+            },
+            {
+                "type": "loop",
+                "speed": 100,
+                "count": 12
+            },
+            {
+                "type": "step",
+                "speed": 300,
+                "count": 8
+            },
+            {
+                "type": "stop",
+                "duration": 1000
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Slow Down",
+        "steps": [
+            {
+                "type": "loop",
+                "speed": 50,
+                "count": 24
+            },
+            {
+                "type": "step",
+                "speed": 200,
+                "count": 10
+            },
+            {
+                "type": "step",
+                "speed": 500,
+                "count": 5
+            },
+            {
+                "type": "step",
+                "speed": 1000,
+                "count": 1
+            },
+            {
+                "type": "stop",
+                "duration": 1000
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Teasing",
+        "steps": [
+            {
+                "type": "loop",
+                "speed": 50,
+                "count": 36
+            },
+            {
+                "type": "step",
+                "speed": 780,
+                "count": 3
+            },
+            {
+                "type": "stop",
+                "duration": 1500
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Slip",
+        "steps": [
+            {
+                "type": "loop",
+                "speed": 50,
+                "count": 24
+            },
+            {
+                "type": "step",
+                "speed": 200,
+                "count": 10
+            },
+            {
+                "type": "stop",
+                "duration": 500
+            },
+            {
+                "type": "step",
+                "speed": 50,
+                "count": 1
+            },
+            {
+                "type": "stop",
+                "duration": 1000
+            }
+        ]
+    }
+]
